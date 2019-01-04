@@ -27,14 +27,14 @@ Enemy.prototype.update = function (dt) {
         this.speed = Math.random() * MAX_LENGTH_FIELD + HALF_LENGTH_ENEMY;
     }
 
-    this.collision();
+    this.collide();
 };
 
 Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Enemy.prototype.collision = function () {
+Enemy.prototype.collide = function () {
     if (this.objPlayer.y === this.y
         && this.objPlayer.x < this.x + HALF_LENGTH_ENEMY && this.objPlayer.x > this.x - HALF_LENGTH_ENEMY) {
         this.objPlayer.goStartPosition();
