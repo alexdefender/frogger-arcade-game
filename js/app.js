@@ -1,40 +1,75 @@
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+const xStartPlayer = 200;
+const yStartPlayer = 400;
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+var Enemy = function (x, y, speed) {
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+Enemy.prototype.update = function (dt) {
+    this.x += this.speed * dt;
+    if (this.x > 500) {
+        this.x = -100;
+        this.speed = Math.random() * (500 - 50) + 50;
+    }
+
+    if ((player.y + 5 === this.y || player.y + 13 === this.y || player.y + 20 === this.y)
+        && player.x < this.x + 50 && player.x > this.x - 50) {
+        player.goStartPosition();
+    }
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
+Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+var Player = function (x, y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/char-boy.png';
+}
 
+Player.prototype.update = function (dt) {
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+}
 
+Player.prototype.render = function () {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+var count = 0;
+Player.prototype.handleInput = function (arr) {
 
+    if (arr === 'left' && this.x > 0) {
+        this.x -= 100;
+    } else if (arr === 'right' && this.x < 400) {
+        this.x += 100;
+    } else if (arr === 'up') {
+        this.y -= 90;
+        if (this.y < 39) {
+            player.goStartPosition();
+            alert("Wins: " + ++count);
+        }
+    } else if (arr === 'down' && this.y < 400) {
+        this.y += 90;
+    }
+}
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+Player.prototype.goStartPosition = function () {
+    this.x = xStartPlayer;
+    this.y = yStartPlayer;
+}
+
+var enemie1 = new Enemy(0, 60, 100);
+var enemie2 = new Enemy(0, 143, 300);
+var enemie3 = new Enemy(0, 225, 200);
+
+var player = new Player(xStartPlayer, yStartPlayer);
+
+var allEnemies = [enemie1, enemie2, enemie3];
+
+document.addEventListener('keyup', function (e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
