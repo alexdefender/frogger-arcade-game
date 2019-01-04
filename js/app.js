@@ -1,5 +1,6 @@
 const xStartPlayer = 200;
 const yStartPlayer = 400;
+let countWin = 0;
 
 var Enemy = function (x, y, speed) {
     this.x = x;
@@ -38,7 +39,7 @@ Player.prototype.update = function (dt) {
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-var count = 0;
+
 Player.prototype.handleInput = function (arr) {
 
     if (arr === 'left' && this.x > 0) {
@@ -49,7 +50,7 @@ Player.prototype.handleInput = function (arr) {
         this.y -= 90;
         if (this.y < 39) {
             player.goStartPosition();
-            alert("Wins: " + ++count);
+            alert("Wins: " + ++countWin);
         }
     } else if (arr === 'down' && this.y < 400) {
         this.y += 90;
